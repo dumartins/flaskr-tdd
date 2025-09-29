@@ -1,0 +1,15 @@
+# python virtual environments
+.venv/
+venv/
+env/
+
+# python caches
+.pytest_cache/
+project/pycache
+tests/pycache
+project/__pycache__
+tests/__pycache__
+__pycache__/
+
+# vscode settings
+.vscode/
