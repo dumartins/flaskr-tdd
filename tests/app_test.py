@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 
 from project.app import app, db
+from project.models import Post
 
 TEST_DB = "test.db"
 
@@ -86,3 +87,14 @@ def test_delete_message(client):
     rv = client.get("/delete/1")
     data = json.loads(rv.data)
     assert data["status"] == 1
+
+def test_search(client):
+    login(client, app.config["USERNAME"], app.config["PASSWORD"])
+    test_data = [Post("test1", "this is a test"), Post("test2", "another test"), Post("test3", "not")]
+    db.session.add_all(test_data)
+    db.session.commit()
+
+    rv = client.get("/search/?query=test1")
+    assert b"test1" in rv.data
+    assert b"test2" not in rv.data
+    assert b"test3" not in rv.data 
